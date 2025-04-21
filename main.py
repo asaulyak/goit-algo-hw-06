@@ -1,10 +1,13 @@
+from collections import deque
+
 import networkx as nx
 import matplotlib.pyplot as plt
 from faker import Faker
 import random
 
-from networkx.algorithms.shortest_paths.weighted import single_source_dijkstra_path_length
-from networkx.algorithms.traversal import dfs_edges, bfs_edges
+from bfs import bfs
+from dfs import dfs
+from dijkstra import dijkstra
 
 fake = Faker()
 social_network = nx.Graph()
@@ -45,14 +48,16 @@ edges_num = social_network.number_of_edges()
 
 plt.figtext(0.5, 0.05, f"Number of nodes: {nodes_num}, Number of edges: {edges_num}", ha="center", fontsize=10)
 
-social_dfs_edges = dfs_edges(social_network, people[0])
-social_bfs_edges = bfs_edges(social_network, people[0])
+social_dfs_edges = dfs(social_network, people[0])
+
+social_bfs_edges = bfs(social_network, deque([people[0]]))
+
 print(list(social_dfs_edges))
 print(list(social_bfs_edges))
 
 
-dijkstra = single_source_dijkstra_path_length(social_network, people[0], cutoff=None, weight='weight')
-print(dijkstra)
+dijkstra_distances = dijkstra(social_network, people[0])
+print(dijkstra_distances)
 
 
 
